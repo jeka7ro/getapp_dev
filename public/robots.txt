@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://getapp.ro/sitemap.xml

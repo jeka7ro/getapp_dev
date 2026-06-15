@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Afișaj Live Demo - GetApp</title>
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EZ3PHK4D9B"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-EZ3PHK4D9B');
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Outfit', sans-serif; margin: 0; padding: 0; overflow: hidden; background: #000; }
+    .display-fullscreen { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; }
+    .content-img { width: 100%; height: 100%; object-fit: contain; z-index: 10; position: relative; }
+    .bg-blur-layer { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: blur(40px) brightness(0.4); z-index: 1; transform: scale(1.1); }
+    
+    /* Parallax Effect Optional */
+    .parallax-layer { animation: parallax 20s ease-in-out infinite; }
+    @keyframes parallax { 0%, 100% { transform: translateY(0) scale(1.02); } 50% { transform: translateY(-30px) scale(1.08); } }
+
+    /* STEAM */
+    .steam { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 20; }
+    .steam-particle { position: absolute; bottom: 0%; width: 180px; height: 180px; background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%); border-radius: 50%; filter: blur(20px); animation: steam-rise 6s ease-out infinite; opacity: 0; }
+    .steam-particle:nth-child(1) { left: 48%; animation-delay: 0s; animation-duration: 7s; }
+    .steam-particle:nth-child(2) { left: 50%; animation-delay: 0.5s; animation-duration: 5.5s; }
+    .steam-particle:nth-child(3) { left: 52%; animation-delay: 1.2s; animation-duration: 8s; }
+    .steam-particle:nth-child(4) { left: 49%; animation-delay: 1.8s; animation-duration: 6.5s; }
+    .steam-particle:nth-child(5) { left: 51%; animation-delay: 2.5s; animation-duration: 7.5s; }
+    .steam-particle:nth-child(6) { left: 47%; animation-delay: 0.3s; animation-duration: 6s; }
+    @keyframes steam-rise { 0% { bottom: -5%; opacity: 0; transform: scale(0.3) translateX(0); } 15% { opacity: 0.6; } 50% { opacity: 0.3; transform: scale(1.4) translateX(15px); } 100% { bottom: 110%; opacity: 0; transform: scale(3) translateX(-30px); } }
+
+    /* SAKURA */
+    .sakura-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 30; }
+    .sakura-petal { position: absolute; top: -10%; width: 18px; height: 22px; background: linear-gradient(145deg, #ffc0cb 0%, #ffb6c1 25%, #ffa0b5 50%, #ff91a4 75%, #ffb6c1 100%); border-radius: 50% 0 50% 50%; opacity: 0.8; filter: drop-shadow(0 1px 3px rgba(255, 105, 180, 0.25)); animation: sakura-fall 10s linear infinite, sakura-sway 4s ease-in-out infinite, sakura-spin 8s linear infinite; }
+    @keyframes sakura-fall { 0% { top: -10%; opacity: 0; } 10% { opacity: 0.85; } 90% { opacity: 0.6; } 100% { top: 110%; opacity: 0; } }
+    @keyframes sakura-sway { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(20px); } 75% { transform: translateX(-15px); } }
+    @keyframes sakura-spin { 0% { transform: rotate(0deg) rotateY(0deg); } 25% { transform: rotate(90deg) rotateY(45deg); } 50% { transform: rotate(180deg) rotateY(0deg); } 75% { transform: rotate(270deg) rotateY(-45deg); } 100% { transform: rotate(360deg) rotateY(0deg); } }
+
+    /* HEARTS */
+    .heart-fall { animation: fall linear infinite; position: absolute; }
+    @keyframes fall { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
+
+    /* SNOW */
+    .snow-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 30; }
+    .snowflake { position: absolute; top: -5%; width: 8px; height: 8px; background: radial-gradient(circle at 30% 30%, #ffffff 0%, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0.6) 60%, rgba(255, 255, 255, 0) 100%); border-radius: 50%; opacity: 0; filter: blur(0.3px); box-shadow: 0 0 4px 1px rgba(255, 255, 255, 0.3), inset 0 0 2px rgba(255, 255, 255, 0.5); animation: snow-fall 10s linear infinite, snow-drift 4s ease-in-out infinite, snow-spin 8s linear infinite; }
+    @keyframes snow-fall { 0% { top: -5%; opacity: 0; } 5% { opacity: 0.8; } 50% { opacity: 0.9; } 85% { opacity: 0.6; } 100% { top: 105%; opacity: 0; } }
+    @keyframes snow-drift { 0%, 100% { transform: translateX(0) scaleY(1); } 25% { transform: translateX(12px) scaleY(0.97); } 75% { transform: translateX(-10px) scaleY(1); } }
+    @keyframes snow-spin { 0% { rotate: 0deg; } 100% { rotate: 360deg; } }
+    /* WATERMARK */
+    .watermark-overlay {
+      position: absolute; inset: 0; z-index: 45; pointer-events: none;
+      display: flex; flex-wrap: wrap; align-items: flex-start;
+      padding: 40px; gap: 0; overflow: hidden;
+    }
+    .wm-text {
+      color: rgba(255,255,255,0.13);
+      font-size: 22px;
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+      letter-spacing: 2px;
+      white-space: nowrap;
+      transform: rotate(-35deg);
+      user-select: none;
+      width: 200px;
+      text-align: center;
+      margin: 30px 20px;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TV DISPLAY -->
+  <div id="tvContainer" class="display-fullscreen hidden overflow-hidden relative">
+    
+    <!-- Image Base (Potentially Parallaxed) -->
+    <img id="bgImage" class="content-img" src="" alt="Demo Background">
+
+    <!-- Screen Custom Text -->
+    <div id="customTextContainer" class="hidden absolute z-50 pointer-events-none">
+      <div id="customTextBody" class="font-bold"></div>
+    </div>
+
+    <!-- Screen Timer Happy Hour -->
+    <div id="customTimerContainer" class="hidden absolute z-50 pointer-events-none">
+      <div class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-2xl shadow-2xl">
+        <div class="text-xs font-semibold uppercase tracking-wider mb-1 text-center">Happy Hour se termină în</div>
+        <div id="activeTimerClock" class="text-3xl font-bold text-center tabular-nums">00:00:00</div>
+      </div>
+    </div>
+
+    <!-- System Watermark - Full screen getapp.ro pattern -->
+    <div class="watermark-overlay">
+      <span class="wm-text">getapp.ro</span>
+      <span class="wm-text">getapp.ro</span>
+      <span class="wm-text">getapp.ro</span>
+      <span class="wm-text">getapp.ro</span>
+      <span class="wm-text">getapp.ro</span>
+      <span class="wm-text">getapp.ro</span>
+      <span class="wm-text">getapp.ro</span>
+      <span class="wm-text">getapp.ro</span>
+      <span class="wm-text">getapp.ro</span>
+      <span class="wm-text">getapp.ro</span>
+      <span class="wm-text">getapp.ro</span>
+      <span class="wm-text">getapp.ro</span>
+      <span class="wm-text">getapp.ro</span>
+      <span class="wm-text">getapp.ro</span>
+      <span class="wm-text">getapp.ro</span>
+      <span class="wm-text">getapp.ro</span>
+      <span class="wm-text">getapp.ro</span>
+      <span class="wm-text">getapp.ro</span>
+      <span class="wm-text">getapp.ro</span>
+      <span class="wm-text">getapp.ro</span>
+    </div>
+
+    <!-- Logo top-right -->
+    <div class="absolute top-6 right-6 z-50 pointer-events-none">
+      <img src="/displays/images/getapp_smart_displays_white.png?v=3" class="h-10 drop-shadow-lg opacity-80" style="max-width:260px;" alt="Get App">
+    </div>
+
+    <!-- Effects -->
+    <div id="effectSteam" class="steam hidden">
+      <div class="steam-particle"></div><div class="steam-particle"></div><div class="steam-particle"></div>
+      <div class="steam-particle"></div><div class="steam-particle"></div><div class="steam-particle"></div>
+    </div>
+    
+    <div id="effectSakura" class="sakura-container hidden">
+      <div class="sakura-petal"></div><div class="sakura-petal"></div><div class="sakura-petal"></div><div class="sakura-petal"></div><div class="sakura-petal"></div>
+      <div class="sakura-petal"></div><div class="sakura-petal"></div><div class="sakura-petal"></div><div class="sakura-petal"></div><div class="sakura-petal"></div>
+    </div>
+
+    <div id="effectSnow" class="snow-container hidden">
+      <div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div>
+      <div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div>
+      <div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div>
+    </div>
+
+    <div id="effectHearts" class="fixed inset-0 pointer-events-none z-40 overflow-hidden hidden"></div>
+
+    <!-- Marketing 5m Kill-Switch Timer (Persistent) -->
+    <div class="absolute bottom-4 left-4 z-[999] p-4 bg-black/80 backdrop-blur-md rounded-2xl border border-rose-500/50 shadow-2xl flex flex-col items-center">
+      <div class="text-[10px] uppercase font-bold text-rose-400 tracking-widest mb-1">Demo Expiră în</div>
+      <div id="demoCountdown" class="text-3xl font-black text-white tabular-nums tracking-widest">05:00</div>
+    </div>
+  </div>
+
+  <!-- EXPIRED DEMO BLOCKER -->
+  <div id="expiredContainer" class="display-fullscreen hidden flex-col items-center justify-center p-6 bg-slate-950 text-center z-[1000]">
+    <div class="max-w-xl mx-auto backdrop-blur-3xl bg-slate-900/80 border border-slate-700 p-12 rounded-[3rem] shadow-2xl relative">
+      <div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-rose-500 text-white rounded-full p-4 shadow-xl shadow-rose-500/30">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <h1 class="text-4xl font-black text-white mt-4 mb-4">Timpul Demo a Expirat</h1>
+      <p class="text-slate-400 text-lg mb-8 leading-relaxed">
+        Sistemul real rulează nelimitat 24/7 pe Smart TV-urile locației tale, fără pauze.<br><br>
+        Te-ai convins cât de bine arată reclamele noastre? Activează-ți contul!
+      </p>
+      <a href="https://getapp.ro" class="inline-block bg-[#00ced1] hover:bg-[#20b2aa] text-slate-900 font-black text-xl px-8 py-4 rounded-xl shadow-[0_0_20px_rgba(0,206,209,0.3)] hover:shadow-[0_0_40px_rgba(0,206,209,0.5)] transition-all">
+        Contactează-ne acum
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // Positional CSS Mapper
+    const posMap = {
+      'top-left': 'top-4 left-4',
+      'top-center': 'top-4 left-1/2 -translate-x-1/2',
+      'top-right': 'top-4 right-4',
+      'center-left': 'top-1/2 left-4 -translate-y-1/2',
+      'center': 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
+      'center-right': 'top-1/2 right-4 -translate-y-1/2',
+      'bottom-left': 'bottom-4 left-4',
+      'bottom-center': 'bottom-4 left-1/2 -translate-x-1/2',
+      'bottom-right': 'bottom-4 right-4',
+    };
+
+    function renderHearts(intensity) {
+      const container = document.getElementById('effectHearts');
+      container.classList.remove('hidden');
+      container.innerHTML = '';
+      const count = intensity === 'low' ? 15 : intensity === 'medium' ? 30 : 50;
+      for(let i=0; i<count; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart-fall';
+        heart.innerText = '❤️';
+        heart.style.left = `${Math.random() * 100}%`;
+        heart.style.top = '-80px';
+        heart.style.fontSize = `${30 + Math.random() * 50}px`;
+        heart.style.animationDuration = `${8 + Math.random() * 7}s`;
+        heart.style.animationDelay = `${Math.random() * 3}s`;
+        heart.style.opacity = 0.3 + Math.random() * 0.4;
+        heart.style.transform = `rotate(${Math.random() * 360}deg)`;
+        container.appendChild(heart);
+      }
+    }
+
+    function renderSnow(intensity) {
+      const container = document.getElementById('effectSnow');
+      container.classList.remove('hidden');
+      container.innerHTML = '';
+      const count = intensity === 'low' ? 15 : intensity === 'medium' ? 25 : 40;
+      for(let i=0; i<count; i++) {
+        const flake = document.createElement('div');
+        flake.className = 'snowflake';
+        flake.style.left = `${Math.random() * 100}%`;
+        const size = 6 + Math.random() * 18;
+        flake.style.width = `${size}px`;
+        flake.style.height = `${size}px`;
+        flake.style.filter = `blur(${Math.random()}px)`;
+        flake.style.opacity = 0.5 + Math.random() * 0.5;
+        flake.style.animationDuration = `${10 + Math.random() * 10}s, ${4 + Math.random() * 4}s, ${8 + Math.random() * 8}s`;
+        flake.style.animationDelay = `${Math.random() * 5}s, ${Math.random() * 2}s, ${Math.random() * 3}s`;
+        container.appendChild(flake);
+      }
+    }
+
+    function renderSakura(intensity) {
+      const container = document.getElementById('effectSakura');
+      container.classList.remove('hidden');
+      container.innerHTML = '';
+      const count = intensity === 'low' ? 10 : intensity === 'medium' ? 18 : 30;
+      for(let i=0; i<count; i++) {
+        const petal = document.createElement('div');
+        petal.className = 'sakura-petal';
+        petal.style.left = `${Math.random() * 100}%`;
+        if(Math.random() > 0.6) {
+            petal.style.width = '25px';
+            petal.style.height = '32px';
+            petal.style.borderRadius = '0 50% 50% 50%';
+            petal.style.background = 'linear-gradient(135deg, #ffd1dc 0%, #ffb7c5 40%, #ff9fb3 100%)';
+        } else if(Math.random() > 0.5) {
+            petal.style.width = '35px';
+            petal.style.height = '42px';
+            petal.style.borderRadius = '50% 50% 0 50%';
+            petal.style.background = 'linear-gradient(160deg, #ffe0e6 0%, #ffc8d6 30%, #ffadc0 70%, #ffc8d6 100%)';
+            petal.style.opacity = '0.7';
+        }
+        petal.style.animationDuration = `${12 + Math.random() * 6}s, ${3.5 + Math.random() * 3}s, ${8 + Math.random() * 5}s`;
+        petal.style.animationDelay = `${Math.random() * 4}s, ${Math.random() * 2}s, ${Math.random() * 2}s`;
+        container.appendChild(petal);
+      }
+    }
+
+    // Inițializare Supabase
+    const SUPABASE_URL = 'https://isdzbwxjtfrykyoeevmy.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_kbi2jOGMhV5xkcs-47LF5w_JvUzuJWa';
+    const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+    async function initDisplay() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const dataParam = urlParams.get('d');
+      const codeParam = urlParams.get('c');
+      
+      const tvI18n = {
+        ro: {
+          err1: "Eroare: Link Invalid", err1p: "Lipsește parametrul.",
+          err2: "Poza nu a fost găsită", err2p: "Codul a expirat sau dacă folosești varianta offline (fără baza de date configurată), Demo-ul rulează corect doar pe aparatul de pe care a fost generat!",
+          err3: "Eroare Decriptare", err3p: "Datele sunt corupte.",
+          exp1: "Timpul Demo a Expirat", exp1p: "Sistemul real rulează nelimitat 24/7 pe Smart TV-urile locației tale, fără pauze.<br><br>Te-ai convins cât de bine arată reclamele noastre? Activează-ți contul!",
+          expBtn: "Contactează-ne acum",
+          demoExp: "Demo Expiră în",
+          hh: "Happy Hour se termină în"
+        },
+        en: {
+          err1: "Error: Invalid Link", err1p: "Parameter missing.",
+          err2: "Image Not Found", err2p: "The code expired or if using the offline fallback, the Demo only runs correctly on the specific device it was generated on!",
+          err3: "Decryption Error", err3p: "Data is corrupted.",
+          exp1: "Demo Time Expired", exp1p: "The real system runs unlimited 24/7 on your location's Smart TVs, with no breaks.<br><br>Convinced by how great our displays look? Activate your account!",
+          expBtn: "Contact us now",
+          demoExp: "Demo Expires in",
+          hh: "Happy Hour ends in"
+        }
+      };
+      const tvContainer = document.getElementById('tvContainer');
+      const expiredContainer = document.getElementById('expiredContainer');
+
+      if (!dataParam && !codeParam) {
+        expiredContainer.innerHTML = `<h1 class="text-white text-3xl font-bold">Eroare: Link Invalid</h1><p class="text-slate-400">Lipsete parametrul.</p>`;
+        expiredContainer.classList.remove('hidden'); expiredContainer.classList.add('flex');
+        return;
+      }
+
+      let payload = null;
+      let localImg = null;
+
+      try {
+        if (codeParam) {
+          // --- SHORT CODE LOGIC ---
+          // 1. Încercăm din Supabase
+          if (supabaseClient && SUPABASE_KEY !== 'YOUR_ANON_KEY_HERE') {
+            try {
+              const { data, error } = await supabaseClient.from('demo_links').select('*').eq('short_code', codeParam).single();
+              if (data) {
+                payload = data.settings;
+                payload.exp = new Date(data.expires_at).getTime();
+                localImg = data.image_base64;
+              }
+            } catch(err) {
+              console.error("Eroare citire Supabase:", err);
+            }
+          }
+          
+          // 2. Fallback din LocalStorage
+          if (!payload) {
+             const storedCfg = localStorage.getItem(`demo_cfg_${codeParam}`);
+             localImg = localStorage.getItem(`demo_img_${codeParam}`);
+             if (storedCfg) {
+               payload = JSON.parse(storedCfg);
+             }
+          }
+        } else if (dataParam) {
+          // --- LEGACY BASE64 LOGIC ---
+          payload = JSON.parse(decodeURIComponent(atob(dataParam)));
+          localImg = localStorage.getItem(`demo_img_${payload.imgId}`);
+        }
+
+        if (!payload) throw new Error("No payload found");
+
+        const lang = payload.lang || 'ro';
+        const t = tvI18n[lang];
+        
+        document.querySelector('#expiredContainer h1').innerText = t.exp1;
+        document.querySelector('#expiredContainer p').innerHTML = t.exp1p;
+        document.querySelector('#expiredContainer a').innerText = t.expBtn;
+        document.querySelector('.text-rose-400.tracking-widest').innerText = t.demoExp;
+        document.querySelector('.uppercase.tracking-wider.mb-1.text-center').innerText = t.hh;
+
+        // --- EXPIRATION (5m Hard Limit / Demo Time) ---
+        const demoExpires = payload.exp;
+        if (Date.now() > demoExpires) {
+          tvContainer.classList.add('hidden');
+          expiredContainer.classList.remove('hidden'); expiredContainer.classList.add('flex');
+          return;
+        }
+
+        setInterval(() => {
+          const remaining = Math.floor((demoExpires - Date.now()) / 1000);
+          if (remaining <= 0) {
+            tvContainer.classList.add('hidden');
+            expiredContainer.classList.remove('hidden'); expiredContainer.classList.add('flex');
+          } else {
+            const days = Math.floor(remaining / 86400);
+            const hours = Math.floor((remaining % 86400) / 3600);
+            const mins = Math.floor((remaining % 3600) / 60);
+            const secs = remaining % 60;
+            if (days > 0) {
+              document.getElementById('demoCountdown').innerText = `${days}z ${String(hours).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+            } else {
+              document.getElementById('demoCountdown').innerText = `${String(hours).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+            }
+          }
+        }, 1000);
+
+        // --- FETCH IMAGE ---
+        if(localImg) {
+          document.getElementById('bgImage').src = localImg;
+          // Inject blurred ambient background
+          const blurBg = document.createElement('img');
+          blurBg.src = localImg;
+          blurBg.className = 'bg-blur-layer';
+          document.getElementById('bgImage').parentNode.insertBefore(blurBg, document.getElementById('bgImage'));
+        } else {
+          expiredContainer.innerHTML = `<h1 class="text-white text-3xl font-bold">${t.err2}</h1><p class="text-slate-400 mt-2">${t.err2p}</p>`;
+          expiredContainer.classList.remove('hidden'); expiredContainer.classList.add('flex');
+          return;
+        }
+
+        // --- APPLY VISUAL EFFECTS ---
+        const eff = payload.eff;
+        if (eff.parallax) document.getElementById('bgImage').classList.add('parallax-layer');
+        if (eff.sakura) renderSakura(eff.intensity || 'high');
+        if (eff.snow) renderSnow(eff.intensity || 'high');
+        if (eff.hearts) renderHearts(eff.intensity || 'high');
+        if (eff.steam) document.getElementById('effectSteam').classList.remove('hidden');
+
+        // --- APPLY ROTATION ---
+        if (payload.rotation) {
+          document.getElementById('bgImage').style.transform = `rotate(${payload.rotation}deg)`;
+          const blurObj = document.querySelector('.bg-blur-layer');
+          if(blurObj) blurObj.style.transform = `scale(1.1) rotate(${payload.rotation}deg)`;
+        }
+
+        // --- APPLY TEXT ---
+        if (payload.text) {
+          const txtWrap = document.getElementById('customTextContainer');
+          const txtBody = document.getElementById('customTextBody');
+          
+          txtWrap.className = `hidden absolute z-50 pointer-events-none ${posMap[payload.text.pos] || posMap['center']}`;
+          
+          txtBody.innerText = payload.text.content;
+          txtBody.style.color = payload.text.color;
+          txtBody.className = `text-5xl lg:text-7xl font-bold transition-all ${payload.text.bg ? 'px-8 py-4 rounded-3xl backdrop-blur-md bg-black/60 shadow-2xl' : 'drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]'}`;
+          
+          txtWrap.classList.remove('hidden');
+        }
+
+        // --- APPLY HAPPY HOUR TIMER ---
+        if (payload.timer) {
+          const timeWrap = document.getElementById('customTimerContainer');
+          timeWrap.className = `hidden absolute z-50 pointer-events-none ${posMap[payload.timer.pos] || posMap['top-center']}`;
+          
+          let durationString = payload.timer.val; // e.g. "05:00" or "01:30:00"
+          let parts = durationString.split(':');
+          let secondsCount = 0;
+          if(parts.length === 3) secondsCount = parseInt(parts[0])*3600 + parseInt(parts[1])*60 + parseInt(parts[2]);
+          else if(parts.length === 2) secondsCount = parseInt(parts[0])*60 + parseInt(parts[1]);
+          else secondsCount = parseInt(parts[0]);
+
+          setInterval(() => {
+            if(secondsCount <= 0) return;
+            secondsCount--;
+            const h = Math.floor(secondsCount/3600);
+            const m = Math.floor((secondsCount%3600)/60);
+            const s = secondsCount%60;
+            document.getElementById('activeTimerClock').innerText = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+          }, 1000);
+          
+          timeWrap.classList.remove('hidden');
+        }
+
+        // START
+        tvContainer.classList.remove('hidden');
+
+      } catch(e) {
+        console.error(e);
+        expiredContainer.innerHTML = `<h1 class="text-white text-3xl font-bold">Eroare</h1><p class="text-slate-400">Datele sunt corupte.</p>`;
+        expiredContainer.classList.remove('hidden'); expiredContainer.classList.add('flex');
+      }
+    }
+
+    initDisplay();
+  </script>
+</body>
+</html>
