@@ -28,10 +28,11 @@ const BASE_PRICES = { day: 1.0, week: 5.0, month: 15.0 };
 const VAT_RATE = 0.21;
 const VAT_MULTIPLIER = 1 + VAT_RATE;
 
-function calcPrice(base, clientType) {
+function calcPrice(base, clientType, isSummerSale) {
+  const finalBase = isSummerSale ? base * 0.5 : base;
   return clientType === "ro" || clientType === "eu_personal"
-    ? base * VAT_MULTIPLIER
-    : base;
+    ? finalBase * VAT_MULTIPLIER
+    : finalBase;
 }
 
 function fmt(num) {
@@ -80,6 +81,9 @@ function PricingInner() {
   const [clientType, setClientType] = useState("ro");
   const [bnrRate, setBnrRate] = useState(null);
   const [openFaq, setOpenFaq] = useState(null);
+
+  const currentMonth = new Date().getMonth();
+  const isSummerSale = currentMonth === 5 || currentMonth === 6; // June or July
 
   // Fetch curs BNR live
   useEffect(() => {
@@ -198,7 +202,7 @@ function PricingInner() {
       )}
 
       {/* ── TVA SELECTOR ─────────────────────────────────────────────────── */}
-      <div className="flex justify-center gap-2 flex-wrap px-6 mb-12 mt-4">
+      <div className="flex justify-center gap-2 flex-wrap px-6 mb-6 mt-4">
         {CLIENT_TYPES.map((ct) => (
           <button
             key={ct.key}
@@ -215,11 +219,20 @@ function PricingInner() {
         ))}
       </div>
 
+      {isSummerSale && (
+        <div className="flex justify-center mb-8 px-6">
+           <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-orange-500/20 border border-orange-500/50 text-orange-400 text-sm font-bold shadow-[0_0_20px_rgba(249,115,22,0.3)] animate-pulse">
+             ☀️ Summer Sale! Reducere 50% aplicată pentru luna Iunie și Iulie.
+           </div>
+        </div>
+      )}
+
       {/* ── PLAN CARDS ───────────────────────────────────────────────────── */}
       <section className="max-w-6xl mx-auto px-6 pb-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {plans.map((plan, i) => {
-            const price = calcPrice(BASE_PRICES[plan.key], clientType);
+            const price = calcPrice(BASE_PRICES[plan.key], clientType, isSummerSale);
+            const baseValue = isSummerSale ? BASE_PRICES[plan.key] * 0.5 : BASE_PRICES[plan.key];
             const hasVat = clientType === "ro" || clientType === "eu_personal";
             const vivaLink = VIVA_LINKS[clientType === "eu_personal" ? "ro" : clientType]?.[plan.key] || VIVA_LINKS.ro[plan.key];
 
@@ -255,7 +268,7 @@ function PricingInner() {
                 </div>
                 {hasVat && (
                   <p className="text-xs text-gray-600 mb-1">
-                    {fmt(BASE_PRICES[plan.key])} EUR + 21% TVA
+                    {fmt(baseValue)} EUR + 21% TVA
                   </p>
                 )}
                 {bnrRate && (
@@ -277,17 +290,14 @@ function PricingInner() {
 
                 {/* CTA */}
                 <a
-                  href={vivaLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="mailto:contact@getapp.ro?subject=Activare%20Abonament"
                   className={`w-full text-center py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r ${plan.color} text-white shadow-lg hover:opacity-90 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2`}
                 >
-                  <img src="https://www.vivapayments.com/assets/images/viva-logo-white.svg" alt="Viva" className="h-4 w-auto" onError={(e) => { e.currentTarget.style.display='none'; }} />
-                  {t("Pay with Viva Wallet", "Plătește cu Viva Wallet")}
+                  {t("Contact us to activate", "Contactează-ne pentru activare")}
                 </a>
 
                 <p className="text-center text-[10px] text-gray-600 mt-3">
-                  {t("Secure payment. No hidden fees.", "Plată securizată. Fără taxe ascunse.")}
+                  {t("Or call us at +40 75 77777 12", "Sau sună-ne la +40 75 77777 12")}
                 </p>
               </motion.div>
             );
