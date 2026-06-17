@@ -4,7 +4,7 @@ import Navbar from "@/components/landing/Navbar";
 import HeroSection from "@/components/landing/HeroSection";
 import LoginPortalSection from "@/components/landing/LoginPortalSection";
 import BentoGrid from "@/components/landing/BentoGrid";
-import { DigitalizareIMMContent } from "@/pages/DigitalizareIMM";
+import DigitalizarePreview from "@/components/landing/DigitalizarePreview";
 import ServicesSection from "@/components/landing/ServicesSection";
 import ProcessSection from "@/components/landing/ProcessSection";
 import TestimonialsSection from "@/components/landing/TestimonialsSection";
@@ -16,7 +16,7 @@ export default function Home() {
       <div className="min-h-screen bg-[#0a0e27] text-white overflow-x-hidden">
         <Navbar />
         <div id="digitalizare-section">
-          <DigitalizareIMMContent />
+          <DigitalizarePreview />
         </div>
         <BentoGrid />
         <HeroSection />
