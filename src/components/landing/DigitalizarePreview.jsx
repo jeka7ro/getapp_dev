@@ -52,7 +52,7 @@ export default function DigitalizarePreview() {
   };
 
   return (
-    <section className="py-20 bg-[#0a0e27] border-t border-white/5 relative">
+    <section className="pt-40 pb-20 lg:pt-48 bg-[#0a0e27] border-t border-white/5 relative">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-[1px] bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
       
       <div className="max-w-6xl mx-auto px-6">
