@@ -105,6 +105,19 @@ export default function CTAFooter() {
             </div>
           </div>
 
+          {/* SEO Text Block */}
+          <div className="mt-12 mb-8 pt-8 border-t border-white/[0.06]">
+            <h3 className="text-gray-400 font-semibold text-sm mb-2">
+              {t("GetApp - Custom Software Development & IT Services Romania", "GetApp - Companie Dezvoltare Software & Servicii IT București, România")}
+            </h3>
+            <p className="text-gray-500 text-xs leading-relaxed text-justify">
+              {t(
+                "GetApp is a top software development company in Romania specializing in custom software solutions, enterprise CRM systems, ERP platforms, web applications, and mobile app development. We help businesses automate workflows, scale operations, and access EU non-reimbursable funds (SME Digitalization 2026). Our IT services cover the entire lifecycle from UI/UX design to robust backend architecture and cloud deployment. Whether you are looking for an IT firm in Bucharest or a global technology partner, GetApp delivers high-performance digital products tailored to your specific industry needs.",
+                "GetApp este o companie de top în dezvoltare software și servicii IT din România (București / Global), specializată în soluții software la comandă, sisteme CRM enterprise, platforme ERP, creare aplicații web și dezvoltare aplicații mobile (iOS & Android). Ajutăm firmele să-și automatizeze fluxurile de lucru, să-și scaleze operațiunile și să acceseze fonduri europene nerambursabile (Digitalizare IMM 2026). Oferim servicii IT complete, de la design UI/UX, arhitectură backend, până la implementare cloud și mentenanță. Indiferent dacă ești în căutarea unei firme de IT în București sau a unui partener tehnologic de încredere la nivel național, GetApp livrează produse digitale performante, sigure și adaptate cerințelor tale specifice de business."
+              )}
+            </p>
+          </div>
+
           <div className="border-t border-white/[0.06] pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-gray-600 text-xs">
               © 2026 GetApp. All rights reserved.
