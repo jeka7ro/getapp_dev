@@ -59,6 +59,7 @@ export const PAGES = {
     "smartpontaj": PrezentarePontaj,
     "PrezentarePontaj": PrezentarePontaj,
     "DigitalizareIMM": DigitalizareIMM,
+    "digitalizare-imm-2026": DigitalizareIMM,
     "admin": Admin,
 }
 

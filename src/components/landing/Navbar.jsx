@@ -29,7 +29,7 @@ export default function Navbar() {
       en: "Solutions", 
       ro: "Soluții",
       sublinks: [
-        { en: "SME Digitalization 2026", ro: "Digitalizare IMM 2026", href: "/DigitalizareIMM" }
+        { en: "SME Digitalization 2026", ro: "Digitalizare IMM 2026", href: "/digitalizare-imm-2026" }
       ]
     },
     { en: "Process", ro: "Proces" },
