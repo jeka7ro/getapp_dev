@@ -117,6 +117,8 @@ function DigitalizareIMMContent() {
                 <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1 block">Nume Firmă / CUI</label>
                 <input 
                   type="text" required
+                  name="organization"
+                  autoComplete="organization"
                   value={formData.business}
                   onChange={e => setFormData({...formData, business: e.target.value})}
                   className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
@@ -127,6 +129,8 @@ function DigitalizareIMMContent() {
                 <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1 block">Numele Tău</label>
                 <input 
                   type="text" required
+                  name="name"
+                  autoComplete="name"
                   value={formData.name}
                   onChange={e => setFormData({...formData, name: e.target.value})}
                   className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
@@ -138,6 +142,8 @@ function DigitalizareIMMContent() {
                   <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1 block">Telefon</label>
                   <input 
                     type="tel" required
+                    name="tel"
+                    autoComplete="tel"
                     value={formData.phone}
                     onChange={e => setFormData({...formData, phone: e.target.value})}
                     className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
@@ -148,6 +154,8 @@ function DigitalizareIMMContent() {
                   <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1 block">Email</label>
                   <input 
                     type="email" required
+                    name="email"
+                    autoComplete="email"
                     value={formData.email}
                     onChange={e => setFormData({...formData, email: e.target.value})}
                     className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
