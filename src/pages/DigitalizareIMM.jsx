@@ -1,15 +1,31 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle2, Building2, Code2, LineChart, Server } from "lucide-react";
+import { 
+  CheckCircle2, Building2, Code2, LineChart, 
+  Server, ShieldCheck, Target, TrendingUp, 
+  FileText, Smartphone, Laptop 
+} from "lucide-react";
 import { useLanguage, LanguageProvider } from "@/components/LanguageContext";
 import Navbar from "@/components/landing/Navbar";
 import CTAFooter from "@/components/landing/CTAFooter";
+import { toast, Toaster } from "react-hot-toast";
+
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJdV1SxI2FCpZhmw8IjSYVneHSb_LaPG8t6VZhEsskYl11mLRObE7UAT9OLc9agxBunA/exec";
 
 function DigitalizareIMMContent() {
   const { t } = useLanguage();
+  
+  // Form State
+  const [formData, setFormData] = useState({
+    name: "",
+    business: "",
+    email: "",
+    phone: ""
+  });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    document.title = t("IT Company Software Development & SME Digitalization 2026 | GetApp", "Companie IT Dezvoltare Software & Digitalizare IMM 2026 | GetApp");
+    document.title = t("Soluții Software Digitalizare IMM 2026 | Fonduri PNRR | GetApp", "Soluții Software Digitalizare IMM 2026 | Fonduri PNRR | GetApp");
     
     let metaDescription = document.querySelector('meta[name="description"]');
     if (!metaDescription) {
@@ -17,90 +33,216 @@ function DigitalizareIMMContent() {
       metaDescription.name = "description";
       document.head.appendChild(metaDescription);
     }
-    metaDescription.content = t("Software development agency and custom IT solutions. We help you access European funds through the SME Digitalization 2026 Program. ERP, CRM, custom mobile apps.", "Agenție dezvoltare software și soluții IT la comandă. Te ajutăm să accesezi fonduri europene prin Programul Digitalizare IMM 2026. ERP, CRM, aplicații mobile personalizate.");
+    metaDescription.content = t("Alege GetApp ca furnizor IT pentru programul Digitalizare IMM 2026. Pachete software PNRR: sisteme de pontaj, ecrane inteligente, ERP, CRM, respectând criteriile DESI.", "Alege GetApp ca furnizor IT pentru programul Digitalizare IMM 2026. Pachete software PNRR: sisteme de pontaj, ecrane inteligente, ERP, CRM, respectând criteriile DESI.");
   }, [t]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          source: "digitalizare_imm"
+        })
+      });
+      toast.success("Cererea a fost trimisă cu succes! Te vom contacta în curând.", { duration: 5000 });
+      setFormData({ name: "", business: "", email: "", phone: "" });
+    } catch (err) {
+      toast.error("Eroare la trimiterea cererii. Te rugăm să ne contactezi telefonic.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <main className="w-full pt-24 pb-16">
-      <div className="max-w-4xl mx-auto px-6">
+      <Toaster position="top-center" />
+      <div className="max-w-6xl mx-auto px-6">
         
-        <div className="mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 mb-6">
-            <Building2 className="w-4 h-4" />
-            <span className="text-xs font-semibold uppercase tracking-wider">
-              {t("European Funds 2026", "Fonduri Europene 2026")}
-            </span>
-          </div>
-          
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-8 leading-tight">
-            {t("SME Digitalization 2026:", "Digitalizare IMM 2026:")} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">{t("Custom Software Development", "Dezvoltare Software Personalizat")}</span> {t("with a Top IT Company", "cu o Companie IT de Top")}
-          </h1>
-          
-          <p className="text-xl text-gray-300 leading-relaxed">
-            {t("Through the", "Prin")} <strong>{t("National Program for SME Digitalization", "Programul Național pentru Digitalizare IMM")}</strong> {t("you can access up to 100,000 Euros in non-refundable funds. To maximize your chances of success and truly implement innovative systems, you need an", "poți accesa până la 100.000 de Euro fonduri nerambursabile. Pentru a maximiza șansele tale de succes și pentru a implementa cu adevărat sisteme inovatoare, ai nevoie de o")} <strong>{t("expert IT company in custom software development", "companie IT expertă în dezvoltare software la comandă")}</strong>.
-          </p>
-        </div>
-
-        <section className="mb-16">
-          <h2 className="text-3xl font-bold text-white mb-6">{t("What kind of IT Solutions do we develop?", "Ce tip de Soluții IT dezvoltăm?")}</h2>
-          <p className="text-gray-400 mb-8 leading-relaxed">
-            {t("We are a performance-driven software development agency. We build end-to-end products, going through complete phases of UI/UX design, frontend/backend programming, and cloud architecture. Here is what we can build for your business with PNRR funds:", "Suntem o agenție de dezvoltare software axată pe performanță. Construim produse cap-coadă, trecând prin faze complete de design UI/UX, programare frontend/backend și arhitectură cloud. Iată ce putem construi pentru afacerea ta prin fondurile PNRR:")}
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-blue-500/50 transition-colors">
-              <Code2 className="w-8 h-8 text-blue-400 mb-4" />
-              <h3 className="text-xl font-bold text-white mb-3">{t("Custom ERP Systems", "Sisteme ERP Personalizate")}</h3>
-              <p className="text-gray-400 text-sm">{t("Complex enterprise resource planning apps, adapted exactly to your employees' workflow, without the limitations of off-the-shelf solutions.", "Aplicații complexe de gestiune a resurselor companiei, adaptate exact pe fluxul de lucru al angajaților tăi, fără limitările soluțiilor de-a gata.")}</p>
+        {/* HERO SECTION */}
+        <div className="mb-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 mb-6">
+              <Building2 className="w-4 h-4" />
+              <span className="text-xs font-semibold uppercase tracking-wider">
+                Fonduri PNRR 2026
+              </span>
             </div>
             
-            <div className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-blue-500/50 transition-colors">
-              <LineChart className="w-8 h-8 text-blue-400 mb-4" />
-              <h3 className="text-xl font-bold text-white mb-3">{t("CRM & Sales Platforms", "Platforme CRM & Vânzări")}</h3>
-              <p className="text-gray-400 text-sm">{t("Manage clients, leads, and order history through super-fast web platforms, easy to use from any device (mobile-first).", "Gestionează clienții, lead-urile și istoricul comenzilor prin platforme web super-rapide, ușor de utilizat de pe orice dispozitiv (mobile-first).")}</p>
-            </div>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight">
+              Soluții Software pentru <br/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">Digitalizare IMM 2026</span>
+            </h1>
+            
+            <p className="text-lg text-gray-300 leading-relaxed mb-8">
+              Până la <strong>100.000 de Euro fonduri nerambursabile</strong> pentru digitalizarea companiei tale. Îți punem la dispoziție pachete tehnologice (ERP, CRM, Pontaj Digital, Smart Displays) care garantează atingerea criteriilor DESI pentru punctaj maxim la evaluare.
+            </p>
 
-            <div className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-blue-500/50 transition-colors">
-              <Server className="w-8 h-8 text-blue-400 mb-4" />
-              <h3 className="text-xl font-bold text-white mb-3">{t("B2B & B2C Web Apps", "Aplicații Web B2B & B2C")}</h3>
-              <p className="text-gray-400 text-sm">{t("Advanced e-commerce platforms, marketplaces, or apps with a dedicated portal for your clients, directly integrated with invoicing and accounting.", "Platforme de e-commerce avansate, marketplace-uri sau aplicații cu portal dedicat clienților tăi, integrate direct cu facturarea și contabilitatea.")}</p>
-            </div>
+            <ul className="space-y-3 text-sm text-gray-400 mb-8">
+              <li className="flex items-center gap-2"><CheckCircle2 className="text-green-400 w-5 h-5"/> Consultanță tehnică pentru caietul de sarcini</li>
+              <li className="flex items-center gap-2"><CheckCircle2 className="text-green-400 w-5 h-5"/> Soluții Cloud și Mobile First (iOS / Android)</li>
+              <li className="flex items-center gap-2"><CheckCircle2 className="text-green-400 w-5 h-5"/> Implementare rapidă și suport tehnic dedicat</li>
+            </ul>
 
-            <div className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-blue-500/50 transition-colors">
-              <CheckCircle2 className="w-8 h-8 text-blue-400 mb-4" />
-              <h3 className="text-xl font-bold text-white mb-3">{t("Timesheet & Team Management Systems", "Sisteme de Pontaj & Management Echipe")}</h3>
-              <p className="text-gray-400 text-sm">{t("Solutions like Smart Timesheet that digitally track attendance, GPS routes, and workflows of field or production employees.", "Soluții precum Smart Pontaj care urmăresc digital prezența, traseele GPS și fluxurile de lucru ale angajaților de pe teren sau din producție.")}</p>
+            <button 
+              onClick={() => document.getElementById("lead-form").scrollIntoView({ behavior: "smooth" })}
+              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-xl shadow-lg shadow-blue-500/20 transition-all hover:scale-105"
+            >
+              Evaluează-ți gratuit proiectul
+            </button>
+          </div>
+
+          {/* FORMULAR EVALUARE */}
+          <div id="lead-form" className="bg-[#0f172a]/80 backdrop-blur-xl border border-blue-500/20 p-8 rounded-3xl shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-indigo-500"></div>
+            <h3 className="text-2xl font-bold text-white mb-2">Solicită o ofertă conformă</h3>
+            <p className="text-gray-400 text-sm mb-6">Completează datele de mai jos și află cum te putem ajuta să bifezi criteriile de intensitate digitală (DESI).</p>
+            
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1 block">Nume Firmă / CUI</label>
+                <input 
+                  type="text" required
+                  value={formData.business}
+                  onChange={e => setFormData({...formData, business: e.target.value})}
+                  className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                  placeholder="ex: SC Digital SRL"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1 block">Numele Tău</label>
+                <input 
+                  type="text" required
+                  value={formData.name}
+                  onChange={e => setFormData({...formData, name: e.target.value})}
+                  className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                  placeholder="ex: Ion Popescu"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1 block">Telefon</label>
+                  <input 
+                    type="tel" required
+                    value={formData.phone}
+                    onChange={e => setFormData({...formData, phone: e.target.value})}
+                    className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                    placeholder="07..."
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1 block">Email</label>
+                  <input 
+                    type="email" required
+                    value={formData.email}
+                    onChange={e => setFormData({...formData, email: e.target.value})}
+                    className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                    placeholder="contact@firma.ro"
+                  />
+                </div>
+              </div>
+              <button 
+                type="submit" disabled={loading}
+                className="w-full mt-4 bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-lg transition-colors disabled:opacity-50"
+              >
+                {loading ? "Se trimite..." : "Cere Oferta și Evaluarea DESI"}
+              </button>
+            </form>
+            <p className="text-xs text-gray-500 mt-4 text-center">Fără obligații contractuale. Analiza se face gratuit de către experții GetApp.</p>
+          </div>
+        </div>
+
+        {/* DESI CRITERIA SECTION */}
+        <section className="mb-20">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-white mb-4">Cum bifăm indicatorii DESI (Intensitate Digitală)?</h2>
+            <p className="text-gray-400 max-w-2xl mx-auto">Pentru a obține punctajul pentru componenta digitală, afacerea ta trebuie să implementeze minim 6 din cei 12 indicatori DESI. Soluțiile GetApp acoperă din start cerințele majore.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-slate-900/40 border border-slate-800 p-6 rounded-2xl hover:bg-slate-800/50 transition-colors">
+              <Server className="w-10 h-10 text-indigo-400 mb-4" />
+              <h3 className="text-xl font-bold text-white mb-2">1. Cloud Computing</h3>
+              <p className="text-sm text-gray-400">Toate aplicațiile noastre (Pontaj, Smart Displays, ERP) sunt găzduite în cloud securizat pe arhitecturi moderne. Angajații pot accesa datele de oriunde, oricând.</p>
+            </div>
+            
+            <div className="bg-slate-900/40 border border-slate-800 p-6 rounded-2xl hover:bg-slate-800/50 transition-colors">
+              <LineChart className="w-10 h-10 text-indigo-400 mb-4" />
+              <h3 className="text-xl font-bold text-white mb-2">2. Sistem ERP / CRM</h3>
+              <p className="text-sm text-gray-400">Pachetele noastre includ module software care automatizează procesul de vânzări, managementul orelor lucrate și schimbul de informații între departamente.</p>
+            </div>
+            
+            <div className="bg-slate-900/40 border border-slate-800 p-6 rounded-2xl hover:bg-slate-800/50 transition-colors">
+              <Laptop className="w-10 h-10 text-indigo-400 mb-4" />
+              <h3 className="text-xl font-bold text-white mb-2">3. Comerț Electronic</h3>
+              <p className="text-sm text-gray-400">Implementăm portale B2B și B2C direct integrate cu softul de gestiune. Creștem rata veniturilor provenite din online conform indicatorilor PNRR.</p>
             </div>
           </div>
         </section>
 
-        <section className="mb-16 prose prose-invert max-w-none">
-          <h2 className="text-3xl font-bold text-white mb-6">{t("Why collaborate with GetApp for Digitalization?", "De ce să colaborezi cu GetApp pentru Digitalizare?")}</h2>
-          <p className="text-gray-400 mb-6 leading-relaxed">
-            {t("As an", "Ca")} <strong>{t("IT company", "companie IT")}</strong>, {t("we are not simple executors. We offer business consulting from day one, analyzing how data flows through your company and proposing modern software architectures based on React, Node.js, and Scalable Cloud architectures.", "nu suntem simpli executanți. Oferim consultanță de business din prima zi, analizând modul în care datele circulă prin compania ta și propunând arhitecturi software moderne, bazate pe React, Node.js și arhitecturi Cloud Scalabile.")}
-          </p>
-          <ul className="space-y-4 text-gray-300">
-            <li className="flex gap-3 items-start">
-              <CheckCircle2 className="w-6 h-6 text-green-400 shrink-0" />
-              <span><strong>{t("Extreme Performance:", "Performanță Extremă:")}</strong> {t("We do not use WordPress or heavy templates. We build custom, native, and performant apps designed to load instantly.", "Nu folosim WordPress sau template-uri greoaie. Construim aplicații personalizate, native și performante, gândite să ruleze instant.")}</span>
-            </li>
-            <li className="flex gap-3 items-start">
-              <CheckCircle2 className="w-6 h-6 text-green-400 shrink-0" />
-              <span><strong>{t("100% PNRR Compatibility:", "Compatibilitate PNRR 100%:")}</strong> {t("We help consulting firms with correct technical specifications (Terms of Reference) so the project passes evaluation and respects the DESI (Digital Economy and Society Index) technological indicators.", "Ajutăm firmele de consultanță cu specificații tehnice corecte (Caiete de Sarcini) pentru ca proiectul să treacă de evaluare și să respecte indicatorii tehnologici DESI (Digital Economy and Society Index).")}</span>
-            </li>
-            <li className="flex gap-3 items-start">
-              <CheckCircle2 className="w-6 h-6 text-green-400 shrink-0" />
-              <span><strong>{t("Exceptional UI/UX Design:", "Design UI/UX Excepțional:")}</strong> {t("Apps developed by us not only work flawlessly, but they are also easy to use by employees, reducing required training time.", "Aplicațiile dezvoltate de noi nu doar că funcționează ireproșabil, dar sunt și ușor de utilizat de către angajați, reducând timpul necesar pentru training.")}</span>
-            </li>
-          </ul>
+        {/* PACKAGES SECTION */}
+        <section className="mb-20">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-white mb-4">Pachete Tehnologice Eligibile PNRR</h2>
+            <p className="text-gray-400 max-w-2xl mx-auto">Soluții scalabile create special pentru IMM-urile care doresc o transformare digitală reală, nu doar pe hârtie.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            
+            {/* Package 1 */}
+            <div className="bg-gradient-to-b from-slate-800/50 to-slate-900/50 border border-slate-700 p-8 rounded-3xl relative">
+              <div className="w-12 h-12 bg-blue-500/20 text-blue-400 flex items-center justify-center rounded-xl mb-6">
+                <Target className="w-6 h-6" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-2">Pachetul "Digital HR & Afișaj"</h3>
+              <p className="text-gray-400 text-sm mb-6 pb-6 border-b border-slate-800">Ideal pentru HoReCa, Retail, Producție. Rezolvă problemele de personal și comunicarea internă/externă.</p>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-start gap-3"><CheckCircle2 className="text-blue-400 w-5 h-5 shrink-0" /><span className="text-sm text-gray-300"><strong>GetApp Smart Pontaj</strong> (Aplicație web & mobil, GPS tracking, export state de plată)</span></li>
+                <li className="flex items-start gap-3"><CheckCircle2 className="text-blue-400 w-5 h-5 shrink-0" /><span className="text-sm text-gray-300"><strong>GetApp Smart Displays</strong> (Sistem Cloud Digital Signage)</span></li>
+                <li className="flex items-start gap-3"><CheckCircle2 className="text-blue-400 w-5 h-5 shrink-0" /><span className="text-sm text-gray-300">Hosting Cloud 12 luni</span></li>
+                <li className="flex items-start gap-3"><CheckCircle2 className="text-blue-400 w-5 h-5 shrink-0" /><span className="text-sm text-gray-300">Mentenanță și instruire personal</span></li>
+              </ul>
+            </div>
+
+            {/* Package 2 */}
+            <div className="bg-gradient-to-b from-indigo-900/40 to-slate-900/50 border border-indigo-500/30 p-8 rounded-3xl relative shadow-[0_0_30px_rgba(79,70,229,0.1)]">
+              <div className="absolute top-0 right-8 transform -translate-y-1/2 bg-indigo-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                CEL MAI POPULAR
+              </div>
+              <div className="w-12 h-12 bg-indigo-500/20 text-indigo-400 flex items-center justify-center rounded-xl mb-6">
+                <Code2 className="w-6 h-6" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-2">Pachetul "ERP / Custom Software"</h3>
+              <p className="text-gray-400 text-sm mb-6 pb-6 border-b border-slate-800">Dezvoltare software la comandă pentru scalarea afacerii, perfect aliniat cu nevoile IMM-ului tău.</p>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-start gap-3"><CheckCircle2 className="text-indigo-400 w-5 h-5 shrink-0" /><span className="text-sm text-gray-300"><strong>Dezvoltare Portal B2B / B2C</strong></span></li>
+                <li className="flex items-start gap-3"><CheckCircle2 className="text-indigo-400 w-5 h-5 shrink-0" /><span className="text-sm text-gray-300"><strong>Sistem intern ERP/CRM</strong> (Automatizări facturare, gestiune clienți)</span></li>
+                <li className="flex items-start gap-3"><CheckCircle2 className="text-indigo-400 w-5 h-5 shrink-0" /><span className="text-sm text-gray-300">Integrare e-Factura / API furnizori</span></li>
+                <li className="flex items-start gap-3"><CheckCircle2 className="text-indigo-400 w-5 h-5 shrink-0" /><span className="text-sm text-gray-300">Infrastructură Cloud scalabilă (AWS / Google Cloud)</span></li>
+              </ul>
+            </div>
+
+          </div>
         </section>
 
-        <div className="bg-[#0d1230] p-8 rounded-2xl border border-white/5 mt-16 text-sm text-gray-500">
-          <h3 className="text-gray-400 font-semibold mb-2">{t("IT Services Covered:", "Servicii IT Acoperite:")}</h3>
-          <p>
-            {t("Whether you need", "Fie că ai nevoie de")} <em>{t("software development in Cluj, Bucharest, Timisoara", "dezvoltare software Cluj, București, Timișoara")}</em> {t("or any other location in Romania, our services have national coverage for implementing", "sau orice altă locație din România, serviciile noastre acoperă la nivel național implementarea de")} <em>{t("custom apps", "aplicații la comandă")}</em>, <em>{t("web platform creation", "creare platforme web")}</em>, <em>{t("iOS and Android mobile apps", "aplicații mobile iOS și Android")}</em>, {t("and full", "și servicii complete de")} <em>{t("company digitalization", "digitalizare companie")}</em> {t("through European funds. We are the software agency that brings you into the future.", "prin fonduri europene. Suntem agenția de software care te aduce în viitor.")}
+        {/* TRUST SECTION */}
+        <section className="bg-[#0d1230] p-8 md:p-12 rounded-3xl border border-white/5 mt-16 text-center">
+          <ShieldCheck className="w-12 h-12 text-blue-500 mx-auto mb-6" />
+          <h2 className="text-2xl font-bold text-white mb-4">De ce să ne alegi ca partener IT?</h2>
+          <p className="text-gray-400 max-w-3xl mx-auto mb-8">
+            Nu suntem o simplă agenție web. Suntem constructori de produse tehnologice. Oferim consultanță din prima zi pentru a ne asigura că proiectul tău tehnic este fezabil și va obține punctaj maxim pe indicatorii tehnici din cadrul programelor europene de digitalizare.
           </p>
-        </div>
+          <div className="flex flex-wrap justify-center gap-4">
+            <span className="px-4 py-2 bg-slate-800/50 rounded-lg text-sm text-gray-300">Performanță Nativă (React, Node.js)</span>
+            <span className="px-4 py-2 bg-slate-800/50 rounded-lg text-sm text-gray-300">Aplicații iOS & Android</span>
+            <span className="px-4 py-2 bg-slate-800/50 rounded-lg text-sm text-gray-300">Suport Tehnic Specializat</span>
+          </div>
+        </section>
 
       </div>
     </main>
