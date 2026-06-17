@@ -15,11 +15,11 @@ export default function Home() {
     <LanguageProvider>
       <div className="min-h-screen bg-[#0a0e27] text-white overflow-x-hidden">
         <Navbar />
-        <BentoGrid />
-        <HeroSection />
         <div id="digitalizare-section">
           <DigitalizareIMMContent />
         </div>
+        <BentoGrid />
+        <HeroSection />
         <LoginPortalSection />
         <ServicesSection />
         <ProcessSection />

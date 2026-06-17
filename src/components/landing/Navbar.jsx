@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Menu, X, Globe } from "lucide-react";
 import { useLanguage } from "../LanguageContext";
+import LogoAnimated from "../LogoAnimated";
 
 export default function Navbar() {
   const { language, toggleLanguage, t } = useLanguage();
@@ -53,11 +54,7 @@ export default function Navbar() {
       >
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <a href="/" className="flex items-center" style={{ textDecoration: 'none' }}>
-          <img
-            src="/logo_cropped.png?v=3"
-            alt="GetApp Logo"
-            style={{ height: '48px' }}
-          />
+          <LogoAnimated size={40} />
         </a>
 
         <div className="hidden md:flex items-center gap-8">
