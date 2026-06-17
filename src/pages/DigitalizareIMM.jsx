@@ -10,7 +10,7 @@ import { toast, Toaster } from "react-hot-toast";
 
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJdV1SxI2FCpZhmw8IjSYVneHSb_LaPG8t6VZhEsskYl11mLRObE7UAT9OLc9agxBunA/exec";
 
-function DigitalizareIMMContent() {
+export function DigitalizareIMMContent() {
   const { t } = useLanguage();
   
   // Form State

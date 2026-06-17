@@ -4,7 +4,7 @@ import Navbar from "@/components/landing/Navbar";
 import HeroSection from "@/components/landing/HeroSection";
 import LoginPortalSection from "@/components/landing/LoginPortalSection";
 import BentoGrid from "@/components/landing/BentoGrid";
-import DigitalizareSection from "@/components/landing/DigitalizareSection";
+import { DigitalizareIMMContent } from "@/pages/DigitalizareIMM";
 import ServicesSection from "@/components/landing/ServicesSection";
 import ProcessSection from "@/components/landing/ProcessSection";
 import TestimonialsSection from "@/components/landing/TestimonialsSection";
@@ -17,7 +17,9 @@ export default function Home() {
         <Navbar />
         <BentoGrid />
         <HeroSection />
-        <DigitalizareSection />
+        <div id="digitalizare-section">
+          <DigitalizareIMMContent />
+        </div>
         <LoginPortalSection />
         <ServicesSection />
         <ProcessSection />
