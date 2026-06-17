@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { 
   CheckCircle2, Building2, Code2, LineChart, 
-  Server, ShieldCheck, Target, TrendingUp, 
-  FileText, Smartphone, Laptop 
+  Server, ShieldCheck, Target, Laptop 
 } from "lucide-react";
 import { useLanguage, LanguageProvider } from "@/components/LanguageContext";
 import Navbar from "@/components/landing/Navbar";
@@ -50,6 +48,17 @@ function DigitalizareIMMContent() {
           source: "digitalizare_imm"
         })
       });
+      // Save locally for admin dashboard
+      const existingLeads = JSON.parse(localStorage.getItem("getapp_demo_leads") || "[]");
+      existingLeads.unshift({
+        name: formData.name,
+        business: formData.business,
+        email: formData.email,
+        phone: formData.phone,
+        date: new Date().toLocaleString("ro-RO")
+      });
+      localStorage.setItem("getapp_demo_leads", JSON.stringify(existingLeads));
+
       toast.success("Cererea a fost trimisă cu succes! Te vom contacta în curând.", { duration: 5000 });
       setFormData({ name: "", business: "", email: "", phone: "" });
     } catch (err) {
