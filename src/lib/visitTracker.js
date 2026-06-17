@@ -9,6 +9,9 @@ const MAX_VISITS = 5000;
 
 export function trackVisit() {
   try {
+    // Nu înregistrăm vizitele administratorului (dacă e logat în backoffice)
+    if (sessionStorage.getItem("ga_admin") === "yes") return;
+
     // Nu înregistrăm pagina de admin
     if (window.location.pathname.startsWith("/admin")) return;
 
